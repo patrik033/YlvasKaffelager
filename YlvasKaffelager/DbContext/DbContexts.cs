@@ -45,10 +45,10 @@ namespace YlvasKaffelager.DbContext
             Orders = new List<Order>();
         }
 
-        public Coffee GetCoffe(int Id)
+        public Coffee GetCoffe(int? id)
         {
 
-            var product = Coffees.Where(c => c.Id == Id).FirstOrDefault()!;
+            var product = Coffees.FirstOrDefault(x => x.Id == id);
             return product;
 
         }

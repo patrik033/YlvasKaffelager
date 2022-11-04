@@ -6,7 +6,7 @@ namespace YlvasKaffelager.DbContext
     {
         List<Coffee> Coffees { get; set; }
         List<Order> Orders { get; set; }
-        public Coffee GetCoffe(int Id);
+        public Coffee GetCoffe(int? id);
         public void AddOrder(Order order);
     }
 }

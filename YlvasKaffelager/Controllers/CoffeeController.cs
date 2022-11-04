@@ -9,7 +9,7 @@ namespace YlvasKaffelager.Controllers
 {
     public class CoffeeController : Controller
     {
-        public IActionResult MyPage()
+        public IActionResult CoffeeIndex()
         {
             return View();
         }

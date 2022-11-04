@@ -31,22 +31,32 @@ namespace YlvasKaffelager.Controllers
 
             return View(model);
         }
+        
+        
+        /// <summary>
+        /// Processes your order to ensure everything is ok before it passes it to
+        /// the ViewOrder Page
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Orders(OrderViewModel model)
+        public IActionResult ProcessOrder(OrderViewModel model)
         {
             if (ModelState.IsValid)
             {
+                //Get the product based on the model 
                 var coffee = _dbContext.GetCoffe(model.CoffeeId);
                 int amount = model.Amount;
+                //create a new ViewOrderModel based on the model passed to the function
                 ViewOrderModel viewModel = CreateOrderModel(model, coffee, amount);
-
+                //If everything is ok pass the new model to the ViewOrder view
                 return View("ViewOrder", viewModel);
             }
             else
             {
+                //If some fields were missing redirect back to the index page
                 return View("Index", model);
-
             }
         }
 
@@ -57,8 +67,9 @@ namespace YlvasKaffelager.Controllers
         }
 
         [HttpPost]
-        public IActionResult Confirm(ViewOrderModel model)
+        public IActionResult CreateOrder(ViewOrderModel model)
         {
+            //Creates a new order and adds it to the "database"
             NumberOfOrders++;
 
             var order = new Order
@@ -74,16 +85,16 @@ namespace YlvasKaffelager.Controllers
 
             _dbContext.AddOrder(order);
 
-
-            return View("Completed");
+            return  RedirectToAction("CompletedOrder");
         }
 
-        public IActionResult Completed()
+        public IActionResult CompletedOrder()
         {
             return View();
         }
         private ViewOrderModel CreateOrderModel(OrderViewModel model, Coffee coffee, int amount)
         {
+            //Creates a new ViewOrderModel and returns it
             var viewModel = new ViewOrderModel
             {
                 FirstName = model.FirstName,
@@ -91,7 +102,7 @@ namespace YlvasKaffelager.Controllers
                 Email = model.Email,
                 Brand = coffee.Brand,
                 Amount = amount,
-                //låter CalculateTotalPrice utföra beräkningen istället
+                //calculateprice is doing all the calculations
                 Total = _priceCalculator.CalculateTotalPrice(amount, coffee.Price),
             };
             return viewModel;
