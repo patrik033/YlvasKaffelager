@@ -27,7 +27,7 @@ namespace YlvasKaffelager.XunitTest
                 Price = 49.90m
             };
             Repo = new Mock<IDbContext>();
-            Repo.Setup(x => x.GetCoffe(0)).Returns(product);
+            Repo.Setup(x => x.GetCoffe(15)).Returns(product);
             Repo.Setup(x => x.GetCoffe(1)).Returns(correctProduct);
             _sut = Repo.Object;
 
@@ -39,7 +39,7 @@ namespace YlvasKaffelager.XunitTest
             var product = new Coffee();
             product = null;
             //Arrange
-            var result = _sut.GetCoffe(0);
+            var result = _sut.GetCoffe(15);
             //Assert
             Assert.Equal(product, result);
         }

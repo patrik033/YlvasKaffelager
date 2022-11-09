@@ -3,7 +3,7 @@
     /// <summary>
     /// Calculate Price
     /// </summary>
-    public class PriceCalculator : IPriceCalculator
+    public class PriceCalculator : ICoffeePriceCalculator
     {
         /// <summary>
         /// Calculate the total price for the order

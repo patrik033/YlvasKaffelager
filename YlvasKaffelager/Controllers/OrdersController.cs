@@ -14,11 +14,11 @@ namespace YlvasKaffelager.Controllers
 {
     public class OrdersController : Controller
     {
-        private readonly IPriceCalculator _priceCalculator;
+        private readonly ICoffeePriceCalculator _priceCalculator;
 
         public IDbContext _dbContext { get; set; }
         public int NumberOfOrders { get; set; }
-        public OrdersController(IPriceCalculator priceCalculator, IDbContext dbContext)
+        public OrdersController(ICoffeePriceCalculator priceCalculator, IDbContext dbContext)
         {
             _dbContext = dbContext;
 
@@ -31,8 +31,8 @@ namespace YlvasKaffelager.Controllers
 
             return View(model);
         }
-        
-        
+
+
         /// <summary>
         /// Processes your order to ensure everything is ok before it passes it to
         /// the ViewOrder Page
@@ -85,7 +85,7 @@ namespace YlvasKaffelager.Controllers
 
             _dbContext.AddOrder(order);
 
-            return  RedirectToAction("CompletedOrder");
+            return RedirectToAction("CompletedOrder");
         }
 
         public IActionResult CompletedOrder()
@@ -94,6 +94,11 @@ namespace YlvasKaffelager.Controllers
         }
         private ViewOrderModel CreateOrderModel(OrderViewModel model, Coffee coffee, int amount)
         {
+            //new instance of priceCalculator
+            ICoffeePriceCalculator coffeePrice = new PriceCalculator();
+            //populate coffePriceDecorator with the coffeePRice
+            CoffeePriceDecorator coffeePriceDecorator = new CoffeePriceDecorator(coffeePrice);
+
             //Creates a new ViewOrderModel and returns it
             var viewModel = new ViewOrderModel
             {
@@ -102,8 +107,8 @@ namespace YlvasKaffelager.Controllers
                 Email = model.Email,
                 Brand = coffee.Brand,
                 Amount = amount,
-                //calculateprice is doing all the calculations
-                Total = _priceCalculator.CalculateTotalPrice(amount, coffee.Price),
+                //calculateTotalPrice is doing all the calculations
+                Total = coffeePriceDecorator.CalculateTotalPrice(amount, coffee.Price),
             };
             return viewModel;
         }

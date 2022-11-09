@@ -8,12 +8,14 @@ namespace YlvasKaffelager.XunitTest
 {
     public class YlvasKaffeLagerTests
     {
-        private readonly IPriceCalculator _priceCalculator;
+        private readonly ICoffeePriceCalculator _priceCalculator;
         private readonly DbContexts _dbContext;
-
+        private readonly CoffeePriceDecorator _decorator;
+        
         public YlvasKaffeLagerTests()
         {
             _priceCalculator = new PriceCalculator();
+            _decorator = new CoffeePriceDecorator(_priceCalculator);
             _dbContext = new DbContexts();
         }
 
@@ -25,9 +27,9 @@ namespace YlvasKaffelager.XunitTest
             var product = _dbContext.GetCoffe(1);
             int amount = 1;
             //Arrange
-            var totalPrice = _priceCalculator.CalculateTotalPrice(amount, product.Price);
+            var totalPrice = _decorator.CalculateTotalPrice(amount, product.Price);
             //Assert
-            Assert.Equal(amount*product.Price, totalPrice);
+            Assert.Equal((amount*product.Price) * 1.25M, totalPrice);
         }
 
     }

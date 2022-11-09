@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace YlvasKaffelager.Calculations
 {
-    public interface IPriceCalculator
+    public interface ICoffeePriceCalculator
     {
         decimal CalculateTotalPrice(int amount, decimal productPrice);
     }

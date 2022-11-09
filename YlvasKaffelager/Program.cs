@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 
 
 //Services
-builder.Services.AddScoped<IPriceCalculator,PriceCalculator>();
+builder.Services.AddScoped<ICoffeePriceCalculator,PriceCalculator>();
 builder.Services.AddScoped<IDbContext,DbContexts>();
 
 
