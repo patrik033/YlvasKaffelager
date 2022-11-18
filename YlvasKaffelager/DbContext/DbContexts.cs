@@ -49,6 +49,7 @@ namespace YlvasKaffelager.DbContext
         {
 
             var product = Coffees.FirstOrDefault(x => x.Id == id);
+
             return product;
 
         }

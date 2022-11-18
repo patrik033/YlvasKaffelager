@@ -47,11 +47,19 @@ namespace YlvasKaffelager.Controllers
             {
                 //Get the product based on the model 
                 var coffee = _dbContext.GetCoffe(model.CoffeeId);
-                int amount = model.Amount;
-                //create a new ViewOrderModel based on the model passed to the function
-                ViewOrderModel viewModel = CreateOrderModel(model, coffee, amount);
-                //If everything is ok pass the new model to the ViewOrder view
-                return View("ViewOrder", viewModel);
+                if (coffee != null)
+                {
+
+                    int amount = model.Amount;
+                    //create a new ViewOrderModel based on the model passed to the function
+                    ViewOrderModel viewModel = CreateOrderModel(model, coffee, amount);
+                    //If everything is ok pass the new model to the ViewOrder view
+                    return View("ViewOrder", viewModel);
+                }
+                else
+                {
+                    return View("Index", model);
+                }
             }
             else
             {
